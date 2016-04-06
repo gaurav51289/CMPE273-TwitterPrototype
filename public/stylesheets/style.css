@@ -1,0 +1,423 @@
+
+.StreamsHero-content {
+    position: relative;
+    text-align: center;
+    transition: top 300ms linear;
+    width: 680px;
+    margin: 0 auto;
+}
+
+.top-nav-signup {
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+    height: 46px;
+    width: 100%;
+    background-image: url(../images/landing-page-header.png);
+    background-size: 100%;
+    background-repeat: none;
+    background-position: center;
+    position: absolute;
+}
+
+.top-nav-home {
+    padding-top: 5px;
+    padding-left: 8.5%;
+    padding-right: 8.5%;
+    background-color: #FFF;
+}
+
+.img-profile-setting-home {
+    width: 34px;
+    height: 34px;
+    border-radius: 4px;
+}
+
+.profile-settings-dropdown {
+    width: 37px;
+    height: 37px;
+    padding-right: 50px;
+}
+
+
+.button-signup-main {
+    width: 95.5%;
+    background-color: #1da1f2;
+    box-shadow: none;
+    font-size: 16px;
+    font-weight: 400;
+    height: auto;
+    padding: 12px 16px;
+    border: 0;
+    -webkit-appearance: button;
+    cursor: pointer;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+}
+
+.home-profile-panel {
+    margin-top: 10px;
+    height: 250px;
+    background-color: #FFF;
+    border: 1px solid #EFEFEF;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.10;);
+    box-shadow: 0 1px 1px rgba(0,0,0,.10);
+    color: inherit;
+}
+
+.home-feeds-panel {
+    margin-top: 10px;
+    height: 500px;
+    background-color: #FFF;
+    border: 1px solid #EFEFEF;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.10;);
+    box-shadow: 0 1px 1px rgba(0,0,0,.10);
+    color: inherit;
+}
+
+.home-newtweets-panel {
+    padding: 0px 0px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    text-align: center;
+}
+
+.home-tweet {
+    padding: 10px 15px;
+    background-color: #FFF;
+    border-top: 1px solid #ddd;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.login-dialog-bird {
+    text-align: center;
+}
+
+.icon-home-bird {
+    margin-left: 700%;
+    width: 37px;
+    height: 37px;
+}
+
+.home-container {
+    margin-top: 4%;
+}
+
+.img-tweet-box {
+    width: 34px;
+    height: 34px;
+    border-radius: 4px;
+}
+
+.form-control-tweet-box {
+    margin-left: 2%;
+}
+
+.form-control-retweet-box {
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;
+}
+
+.tweet-box-big {
+    resize: none;
+}
+
+.btn-tweet-btn {
+    margin-top: 5px;
+}
+
+.btn-new-tweets{
+    background-color: #F5F8FA !important;
+    height: 38px !important;
+    font-size: 15px !important;
+    padding: 0 !important;
+    border-radius: 0px !important;
+    border-style: none !important;
+}
+
+.btn-new-tweets:hover{
+    background-color: #E1E8ED !important;
+}
+
+.profile-block-upper{
+    border-radius: inherit;
+    background-color: #1DA1F2;
+    width: 100%;
+    height: 50%;
+}
+
+.profile-pic-home{
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #FFFFFF;
+    width: 33%;
+    height: 33%;
+    margin-left: 5%;
+    margin-top: -17%;
+}
+
+.profile-pic-home-img{
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+}
+
+.profile-details-home{
+    margin-left: 40%;
+    margin-top: -15%;
+}
+
+.home-stats{
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 10px;
+}
+
+.profile-block-name{
+    margin-top: 6px;
+    font-size: 16px;
+
+}
+
+.profile-block-handle{
+    color: #8899A8;
+    font-size: 12px;
+
+}
+
+.stats-counts{
+    font-size: 18px;
+    color: #1DA1F2;
+    font-weight: 200;
+    text-align: left;
+
+}
+
+ .stats-header{
+    font-size: 12px;
+    color: #8899A8;
+ }
+
+.tweet-img{
+    border-radius: 5px;
+    height: 50px;
+    width: 50px;
+}
+
+.profile-cover-pic{
+    background-color: #8899A8;
+    height: 200px;
+    width: 100%;
+}
+
+.profile-nav{
+    padding-left: 29% !important;
+    padding-right: 29% !important;
+}
+
+.profile-profile-pic{
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #FFFFFF;
+    margin-top: -47%; 
+    background-image: url("../images/profpics/default.jpg");
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+}
+
+.profile-profile-pic-img{
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+}
+
+.profile-description{
+    padding-left: 10% !important;
+}
+
+.profile-fullname{
+    margin-top: 6px;
+    font-size: 20px;
+    font-weight: 550;
+}
+
+.profile-handle{
+    padding-top: 6px;
+     color: #8899A8;
+    font-size: 15px;
+
+}
+
+.profile-about-me{
+   
+    font-size: 12px;
+}
+
+
+
+.profile-tweets{
+    padding: 10px 15px;
+    background-color: #FFF;
+    border-top: 1px solid #ddd;
+    border-top-right-radius: 5px ;
+    border-top-left-radius: 5px ;
+}
+
+.img-who-to-follow {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+}
+
+.btn-edit-profile{
+    margin-top: 3px;
+}
+
+.change-profile-pic-img{
+    border-radius: 5px;
+    height: 100px;
+    width: 100px;
+}
+
+
+.search-header{
+    margin-top: 5%;
+    background-color: #8899A8;
+    height: 40px;
+    width: 100%;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.retweeted-img{
+    height: 30px;
+    width: 30px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.StreamsHero-buttonContainer .Button {
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.3);
+    font-size: 16px;
+    font-weight: 200;
+    padding: 10px 35px;
+}
+.Button {
+    -webkit-appearance: none;
+    background: transparent;
+    border-color: currentcolor;
+    border-style: solid;
+    border-width: 1px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    color: inherit;
+    cursor: pointer;
+    display: inline-block;
+    font: inherit;
+    line-height: normal;
+    margin: 0;
+    padding: .4em .75em;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: normal;
+}
+a {
+    color: #337ab7;
+    text-decoration: none;
+}
+a {
+    background-color: transparent;
+}
+a {
+    color: #1b95e0;
+    text-decoration: none;
+}
+
+a {
+    background: transparent;
+}
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+user agent stylesheet
+a:-webkit-any-link {
+    color: -webkit-link;
+    text-decoration: underline;
+    cursor: auto;
+}
+Inherited from div.StreamsHero-buttonContainer
+.StreamsHero-buttonContainer {
+    color: #fff;
+    margin: 0 auto;
+    padding-top: 20px;
+    text-align: right;
+    width: 1195px;
+}
+
+html {
+    font-size: 10px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+:after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+:after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}

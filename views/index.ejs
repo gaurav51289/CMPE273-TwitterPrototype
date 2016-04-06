@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html ng-app="users">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+
+<link rel="stylesheet" href="stylesheets/twitter_more_1.bundle.css">
+<link rel="stylesheet" href="stylesheets/twitter_more_2.bundle.css">
+
+
+    <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet"> 
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="angular/usersAngular.js"></script>
+
+
+<title>Twitter</title>
+
+<link href="https://abs.twimg.com/favicons/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+</head>
+
+<body ng-controller="loginController">
+
+<div class="StreamsHero">
+<div class="StreamsHero-image" style="background-image: url(images/landing-page-header1.png);"></div>
+<div class="StreamsHero-buttonContainer">
+	<a href="/">
+	<img src="images/icon-white.png" height="32" width="40">
+	</a>
+	<a class="Button StreamsSignUp" href="/signup">Sign up</a>
+	<a class="Button StreamsLogin" id="modal-748235" href="#modal-container-748235" role="button" class="btn" data-toggle="modal">Log In</a>
+</div>
+<div class="StreamsHero-content">
+<h2 class="StreamsHero-header">See what’s happening right now.</h2>
+<p class="StreamsHero-blurb">Find community,conversation and inspiration about the things you love.</p>
+</div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="modal-container-748235" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          ×
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+        Login to Twitter
+        </h4>
+      </div>
+      <div class="LoginDialog-body modal-body">
+        <div class="login-dialog-bird">
+          <span><img src="images/icon.png"></span>
+        </div>
+        <div class="LoginDialog-form">
+          <div class="LoginForm js-front-signin">
+            <div class="LoginForm-input LoginForm-username">
+              <input type="text" class="text-input email-input js-signin-email" placeholder="Username" ng-model="username">
+            </div>
+
+            <div class="LoginForm-input LoginForm-password">
+              <input type="password" class="text-input" placeholder="Password" ng-model="password">
+            </div>
+
+            <div class="LoginForm-rememberForgot">
+              <label>
+                <input type="checkbox" value="1" checked="checked">
+                <span>Remember me</span>
+              </label>
+              <span class="separator">·</span>
+              <a class="forgot" href="/passwordRest">Forgot password?</a>
+            </div>
+
+            <input type="submit" class="submit" value="Log in" ng-click="loginUser()">
+          </div>
+        </div>
+      </div>
+      <div class="LoginDialog-footer modal-footer u-textCenter">
+        Don't have an account? <a class="LoginDialog-signupLink" href="/signup">Sign up »</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="stylesheets/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+
+
+
+

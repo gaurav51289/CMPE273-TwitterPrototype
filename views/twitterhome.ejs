@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<!-- saved from url=(0026)https://twitter.com/signup -->
+<html lang="en">
+<!--<![endif]-->
+<head>
+        
+       
+    <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet"> 
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="angular/homePageAngular.js"></script>
+    
+
+    <title>Twitter</title>
+    
+    <link href="https://abs.twimg.com/favicons/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    
+</head>
+<body ng-app="twitterhome" style="background-color: #EFEFEF;"  ng-controller="bodyCtrl">
+    <div class="container-fluid nopadding">
+    <div class="row">
+        <div class="col-md-1 nopadding">
+        </div>
+        <div class="col-md-10">
+            <ul class="nav nav-tabs navbar-fixed-top top-nav-home">
+                <li class="active ">
+                    <a href="/twitterhome">Home</a>
+                </li>
+                <li>
+                    <a href="#">Notifications</a>
+                </li>
+                <li>
+                    <a href="#">Messages</a>
+                </li>
+                <li>
+                    <img src="images/icon.png" class="icon-home-bird">
+                </li>
+                <li class="pull-right">
+                    <button type="button" class="btn btn-primary btn-default" ng-click="logoutUser()">
+                        Logout
+                    </button>
+                </li>
+                <li class="profile-settings-dropdown pull-right">
+                    <img class="img-profile-setting-home" src="images/profpics/{{userId}}.jpg">
+                </li>
+                <li class="pull-right">  
+                    <div class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search #Tags" ng-model="searchString" ng-change="doSearch()">
+                        </div> 
+                   
+                    </div> 
+                </li>        
+            </ul>
+        </div>
+        <div class="col-md-1 nopadding">
+        </div>
+    </div>
+    <div class="container home-container" ng-hide="searchShow">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+              <!--   <div class="col-md-1">
+                </div> -->
+                <div class="col-md-3">
+                    <div class="home-profile-panel">
+                            <div class="profile-block-upper"></div>
+                            <div class="profile-block-lower"></div>
+                            <div class="profile-pic-home"><img class="profile-pic-home-img" src="images/profpics/{{userId}}.jpg"></div>
+                            <div class="profile-details-home"><a href="/{{username}}"><strong class="profile-block-name">{{fullname}}</strong></a><br><span class="profile-block-handle"></span></div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4 home-stats"  style="margin-left: 20px;">
+                                    <span class="stats-header">TWEETS</span><br><span class="stats-counts">{{tweets_count}}</span>
+                                </div>
+                                <div class="col-md-4 home-stats" style="margin-left: -25px;">
+                                    <span class="stats-header">FOLLOWING</span><br><span class="stats-counts">{{following_count}}</span>
+                                </div>
+                                <div class="col-md-4 home-stats" style="margin-left: -20px;">
+                                    <span class="stats-header">FOLLOWERS</span><br><span class="stats-counts">{{followers_count}}</span>
+                                </div>
+                                
+                            </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6 nopadding">
+                    <div class="home-feeds-panel">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-1">
+                                <img class="img-tweet-box" src="images/profpics/{{userId}}.jpg">
+                                </div>
+                                <div class="col-md-10 nopadding">
+                                <textarea type="textarea" rows="{{twtBoxRows}}" class="form-control form-control-tweet-box tweet-box-big" placeholder="What's happening?" ng-focus="twtBoxFocus()" ng-blur="twtBoxBlur()" ng-model="twtBoxContent"></textarea>
+                                <button class="btn btn-primary btn-tweet-btn pull-right" ng-show="twtBtnShow" ng-click="sendTweet()"><!-- <img src="images/tweet-btn-img.png"> -->Tweet</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="home-newtweets-panel">
+                           <button class="btn btn-default btn-lg btn-block btn-new-tweets" ng-show="newTweetBarShow" ng-click="fetchNewTweets()">4 New Tweets</button>
+                        </div>
+                        <div class="home-tweet">
+
+                            <div class="media" ng-repeat="newTweet in newTweets | orderBy:'-tweet_timestamp'">
+
+                                <div ng-show="{{newTweet.isretweet}}"><img src="images/retweeted.png" class="retweeted-img"><a href="/{{newTweet.retweetedby}}">@{{newTweet.retweetedby}}</a> Retweeted</div>
+
+                                <a class="pull-left" href="#"><img class="tweet-img" alt="Bootstrap Media Preview" class="media-object" 
+                                src="images/profpics/{{newTweet.user_id}}.jpg"></a>
+                                <div class="media-body">
+                                    <a href="/{{newTweet.username}}"><h4 style="color: #000;" class="media-heading">{{newTweet.fullname}}</h4></a>
+                                    <a href="/{{newTweet.username}}"><h6 style="color: #FB8790;">@{{newTweet.username}}</h6></a>
+                                    {{newTweet.tweet_desc}}
+                                    <div class="row">
+                                        <div class="btn-group" style="margin-top: 30px">
+                                            <a href="#">
+                                               <span class="glyphicon glyphicon-share-alt"></span>
+                                               
+                                            </a>
+                                            <a href="#">
+                                                <span id="modal-158436" href="#modal-container-158436" role="button" data-toggle="modal" class="glyphicon glyphicon-retweet" ng-click="setRetweetContent(newTweet)"></span>
+                                                <span>&nbsp;{{newTweet.retweets_count}}</span>
+                                            </a>
+                                            <!-- MODAL FOR RETWEET STARTS -->
+                                            <div class="modal fade" id="modal-container-158436" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                ×
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">
+                                                                Retweet this to your followers?
+                                                            </h4>
+                                                        </div>
+                                                        <div class="modal-body row">
+                                                            <div>
+                                                                <textarea type="textarea" rows="{{twtBoxRows}}" class="form-control form-control-retweet-box tweet-box-big" placeholder="Add your comment." ng-focus="twtBoxFocus()" ng-blur="twtBoxBlur()" ng-model="retweetComment"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="media">
+                                                                <a class="pull-left" href="#"><img class="tweet-img" alt="Bootstrap Media Preview" class="media-object" 
+                                                                    src="images/profpics/{{retweet.user_id}}.jpg"></a>
+                                                                    <div class="media-body">
+                                                                        <h4 class="media-heading">{{retweet.fullname}}</h4><h6 style="color: #FB8790;">@{{retweet.username}}</h6>
+                                                                            {{retweet.tweet_desc}}
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+
+                                                            <button type="button" class="btn btn-primary" ng-click="sendRetweet(retweet)" data-dismiss="modal">
+                                                                Retweet
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- MODAL FOR RETWEET ENDS -->
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-heart" style="padding-left: 30px"></span>
+                                            </a>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-remove" style="padding-left: 30px"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="home-profile-panel">
+                        <h4>&nbsp;Who to follow?</h4>
+                        <div class="row" ng-repeat="user in rightPanelUsers">
+                            <div class="col-md-2">
+                                <div style="padding: 5px;"><img src="images/profpics/{{user.user_id}}.jpg" class="img-who-to-follow"></div>
+                            </div>
+                            <div class="col-md-10">
+                                <div style="padding: 10px;">
+                                    <a href="/{{user.username}}"><strong>{{user.fullname}}</strong></a>
+                                    <br>
+                                    <button class="btn btn-primary btn-xs" ng-click="followUser(user)" ng-show="user.showFollowButton">Follow</button>
+                                    <button class="btn btn-primary btn-xs" ng-click="unfollowUser(user)" ng-hide="user.showFollowButton">Unfollow</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- <div class="col-md-1">
+                </div> -->
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid nopadding" ng-show="searchShow">
+       <div class="search-header">
+            <span><h1>{{searchString}}</h1></span>
+        </div>
+
+
+        <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-6">
+                    <div class="home-feeds-panel">
+                       
+                        <div class="home-tweet">
+
+                            <div class="media" ng-repeat="newTweet in searchResult | orderBy:'-tweet_timestamp'">
+                                <a class="pull-left" href="#"><img class="tweet-img" alt="Bootstrap Media Preview" class="media-object" 
+                                src="images/profpics/{{newTweet.user_id}}.jpg"></a>
+                                <div class="media-body">
+                                    <a href="/{{newTweet.username}}"><h4 style="color: #000;" class="media-heading">{{newTweet.fullname}}</h4></a>
+                                    <a href="/{{newTweet.username}}"><h6 style="color: #FB8790;">@{{newTweet.username}}</h6></a>
+                                    {{newTweet.tweet_desc}}
+                                    <div class="row">
+                                        <div class="btn-group" style="margin-top: 30px">
+                                            <a href="#">
+                                               <span class="glyphicon glyphicon-share-alt"></span>
+                                               
+                                            </a>
+                                            <a href="#">
+                                                <span id="modal-158436" href="#modal-container-158436" role="button" data-toggle="modal" class="glyphicon glyphicon-retweet" ng-click="setRetweetContent(newTweet)"></span>
+                                                <span>&nbsp;{{newTweet.retweets_count}}</span>
+                                            </a>
+                                            <!-- MODAL FOR RETWEET STARTS -->
+                                            <div class="modal fade" id="modal-container-158436" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                ×
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">
+                                                                Retweet this to your followers?
+                                                            </h4>
+                                                        </div>
+                                                        <div class="modal-body row">
+                                                            <div>
+                                                                <textarea type="textarea" rows="{{twtBoxRows}}" class="form-control form-control-retweet-box tweet-box-big" placeholder="Add your comment." ng-focus="twtBoxFocus()" ng-blur="twtBoxBlur()" ng-model="retweetComment"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="media">
+                                                                <a class="pull-left" href="#"><img class="tweet-img" alt="Bootstrap Media Preview" class="media-object" 
+                                                                    src="images/profpics/{{retweet.user_id}}.jpg"></a>
+                                                                    <div class="media-body">
+                                                                        <h4 class="media-heading">{{retweet.fullname}}</h4><h6 style="color: #FB8790;">@{{retweet.username}}</h6>
+                                                                      {{retweet.tweet_desc}}
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+
+                                                            <button type="button" class="btn btn-primary" ng-click="sendRetweet(retweet)" data-dismiss="modal">
+                                                                Retweet
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- MODAL FOR RETWEET ENDS -->
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-heart" style="padding-left: 30px"></span>
+                                            </a>
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-remove" style="padding-left: 30px"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+    </div>
+    </div>
+
+
+       <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="stylesheets/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+
+
+             

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!-- saved from url=(0026)https://twitter.com/signup -->
+<html lang="en" ng-app="users">
+<!--<![endif]-->
+<head>
+        
+   
+
+    
+    <link href="stylesheets/twitter_core.bundle.css" rel="stylesheet">
+    <link href="stylesheets/twitter_more_1.bundle.css" rel="stylesheet">
+    <link href="stylesheets/twitter_more_2.bundle.css" rel="stylesheet">
+    <link href="stylesheets/t1_signup.bundle.css" rel="stylesheet">
+    <link href="stylesheets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet"> 
+    
+    
+    <title>Sign up for Twitter</title>
+    
+    <link href="https://abs.twimg.com/favicons/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="angular/usersAngular.js"></script>
+    
+</head>
+<body class="three-col logged-out ms-windows phx-signup fast-signup" ng-controller="signUpController">
+    <div class="route-signup" id="doc">
+        
+            <div class="top-nav-signup">
+              <div class="icon-bird"></div>
+            </div>
+        
+        <div id="page-outer">
+            <div class="AppContent wrapper wrapper-signup" id="page-container">
+                <div class="page-canvas">
+                    <div class="signup-wrapper">
+
+                        <div ng-hide="hideSignUp1">
+                        <h1>Join Twitter today.</h1>
+                        <div action="" class="t1-form signup" id="phx-signup-form" name="phx-signup-form">
+                            <div class="textbox">
+                                <div class="prompt name">
+                                    <div class="field">
+                                        <input aria-required="true" autocomplete="off" class="" id="full-name" maxlength="20" name="user[name]" placeholder="Full name" type=
+                                        "text" value="" ng-model="fullName">
+                                        </div>
+                                    </div>
+                                
+                                <div class="prompt password">
+                                    <div class="field" data-fieldname="password">
+                                        <input aria-required="true" placeholder="Password" type="password" value="" ng-model="password">
+                                    </div>
+                                    <div class="score">
+                                        <span><b class="fill"></b></span>
+                                    </div>
+                                </div>
+                
+                            <div class="doit">
+                                <div class="sign-up-box">
+                                    <button class="button-signup-main" ng-click="doSignUp()">Sign Up</button>
+                                </div>
+                            </div>
+                            <div class="panel panel-danger" ng-show="page1error">Fullname and Password are required.</div>
+                          </div>
+                    </div>
+                    </div>
+
+                    <div ng-hide="hideSignUp2">
+                        <h1>Enter your contact information.</h1>
+                        <div action="" class="t1-form signup" id="phx-signup-form" name="phx-signup-form">
+                            <div class="textbox">
+                                <div class="prompt email">
+                                    <div class="field">
+                                        <input required="true" autocomplete="off" class="email-input" placeholder="Email" type="text" value="" ng-model="emailId">
+                                        
+                                    </div>
+                                </div>
+                                <div class="prompt phone">
+                                    <div class="field">
+                                        <input required="true" autocomplete="off" class="email-input" placeholder="Phone No." type="text" value="" ng-model="phoneNo">
+                                        
+                                    </div>
+                                </div>
+                        
+                            <div class="doit">
+                                <div class="sign-up-box">
+                                    <button class="button-signup-main" ng-click="doRegisterPhone()">Next</button>
+                                </div>
+                            </div>
+                            <div class="panel panel-danger" ng-show="page2error">Email and Phone No. are required.</div>
+                          
+                          </div>
+                    </div>
+                    </div>
+
+                           <div ng-hide="hideSignUp3">
+                                <h1>Choose a username.</h1>
+                                <div action="" class="t1-form signup" id="phx-signup-form" name="phx-signup-form">
+                                <div class="textbox">
+                                <div class="invite-landing-desc">
+                                    This will be called your twitter handle.
+                                </div>
+
+                                    <div class="prompt select-username">
+                                      <div class="field" data-fieldname="username">
+                                        
+                                      <input id="username" type="text" autocomplete="off" value="" data-pre-input-value="" name="user[screen_name]" maxlength="15" aria-required="true" placeholder="Username" ng-model="username">
+                                  </div>
+                                  </div>
+                                </div>
+                                  
+                                    <div class="doit">
+                                        <div class="sign-up-box">
+                                            <button class="button-signup-main" ng-click="doRegisterUsername()">Done</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-danger" ng-show="page3error">Username is required.</div>
+                                    <div class="panel panel-danger" ng-show="page3username">Username already in use. Try a different one.</div>
+                                </div>  
+
+                            </div>   
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="stylesheets/js/bootstrap.min.js"></script>
+</body>
+</html>

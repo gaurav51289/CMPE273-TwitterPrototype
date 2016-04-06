@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="users">
+
+<head>
+
+  <link href="stylesheets/style.css" rel="stylesheet">    
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <link href="stylesheets/twitter_core.bundle.css" rel="stylesheet">
+  <link href="stylesheets/twitter_more_1.bundle.css" rel="stylesheet">
+  <link href="stylesheets/twitter_more_2.bundle.css" rel="stylesheet">
+  <link href="stylesheets/t1_signup.bundle.css" rel="stylesheet">
+
+
+
+  <link as="script" href="./Sign up for Twitter_files/boot.fd31af7889f8ed2508a9e56805dbd13fd82469d1.js" rel="preload">
+  <title>Sign up for Twitter</title>
+
+  <link href="https://abs.twimg.com/favicons/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+  <script src="angular/usersAngular.js"></script>
+
+</head>
+<body class="three-col logged-out ms-windows phx-signup fast-signup" ng-controller="loginController">
+
+
+
+
+<div class="modal-header">
+  <h3 class="modal-title">Log in to Twitter</h3>
+</div>
+<div class="LoginDialog-body modal-body">
+  <div class="login-dialog-bird">
+    <span><img src="images/icon.png"></span>
+  </div>
+  <div class="LoginDialog-form">
+    <div class="LoginForm js-front-signin">
+      <div class="LoginForm-input LoginForm-username">
+        <input type="text" class="text-input email-input js-signin-email" placeholder="Username" ng-model="username">
+      </div>
+
+      <div class="LoginForm-input LoginForm-password">
+        <input type="password" class="text-input" placeholder="Password" ng-model="password">
+      </div>
+
+      <div class="LoginForm-rememberForgot">
+        <label>
+          <input type="checkbox" value="1" checked="checked">
+          <span>Remember me</span>
+        </label>
+        <span class="separator">·</span>
+        <a class="forgot" href="/passwordRest">Forgot password?</a>
+      </div>
+
+      <input type="submit" class="submit btn primary-btn js-submit" value="Log in" ng-click="loginUser()">
+    </div>
+  </div>
+</div>
+<div class="LoginDialog-footer modal-footer u-textCenter">
+  Don't have an account? <a class="LoginDialog-signupLink" href="/signup">Sign up »</a>
+</div>
+
+
+</div>
+
+</body>
+</html>
