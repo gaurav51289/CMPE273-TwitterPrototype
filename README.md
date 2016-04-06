@@ -1,6 +1,7 @@
 
 
 # twitterv3.0
+This project is a prototype twitter application developed towards Lab assignment for CMPE273 @ SJSU.
 
 
 
