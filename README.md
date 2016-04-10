@@ -4,15 +4,6 @@
 This project is a prototype twitter application developed towards Lab assignment for CMPE273 @ SJSU.
 
 
-
-## Usage
-
-
-
-## Developing
-
-
-
 ### Tools
 
 Created with [Nodeclipse](https://github.com/Nodeclipse/nodeclipse-1)
