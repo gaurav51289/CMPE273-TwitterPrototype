@@ -1,5 +1,5 @@
-var ejs = require("ejs");
-var mysql = require('./mysql');
+
+var mongo = require('./mongo');
 
 
 
@@ -7,29 +7,27 @@ exports.getRightPanelUsers = function(req,res){
 
 	var userId = req.session.userId;
 
-	var rightPanelUsersQuery = "select user_id,fullname,username from users where user_id not in " +
-"(select f.following_id from users u, follows f " + 
-"where u.user_id = '" +userId+ "' and u.user_id = f.follower_id) and user_id != '" +userId+ "' LIMIT 3";
+// 	var rightPanelUsersQuery = "select user_id,fullname,username from users where user_id not in " +
+// "(select f.following_id from users u, follows f " +
+// "where u.user_id = '" +userId+ "' and u.user_id = f.follower_id) and user_id != '" +userId+ "' LIMIT 3";
 
-	mysql.fetchData(function(err,results){
+	mongo.find('users', {},function(err,findRes){
 		if(err){
 			throw err;
 		}
-		else 
+		else
 		{
-			if(results.length > 0){
-				
-				var jsonresp = {"status" : "OK", "results" : results};
-				res.send(jsonresp);				
+			if(findRes){
+				console.log(findRes);
+				var jsonresp = {"status" : "OK", "results" : findRes};
+				res.send(jsonresp);
 			}
-			else {    
+			else {
 				console.log("Something's wrong.");
-				
+
 			}
 		}
-
-	},rightPanelUsersQuery);
-
+	});
 };
 
 exports.getLeftPanelData = function(req,res){
@@ -45,43 +43,33 @@ exports.getLeftPanelData = function(req,res){
 	var tweetsCountQuery = "SELECT count(tweet_id) AS tweets_count FROM tweets WHERE user_id = '" +userId+ "'";
 
 
-	mysql.fetchData(function(err,results){
+	mongo.count('follows',{'follower_id' : userId},function(err,countRes){
 		if(err){
 			throw err;
 		}
-		else 
+		else
 		{
-			if(results.length > 0){
-				following_count = results[0].following_count;	
-			}
-			else {    
-				console.log("Something's wrong.");
-				
-			}
+				following_count = countRes;
 		}
 
-	},followingCountQuery);
+	});
+
+	mongo.count('follows',{'following_id' : userId},function(err,countRes){
+		if(err){
+			throw err;
+		}
+		else
+		{
+				followers_count = countRes;
+		}
+
+	});
+
 
 	mysql.fetchData(function(err,results){
 		if(err){
 			throw err;		}
-		else 
-		{
-			if(results.length > 0){
-				followers_count = results[0].followers_count;					
-			}
-			else {    
-				console.log("Something's wrong.");
-				
-			}
-		}
-
-	},followersCountQuery);
-
-	mysql.fetchData(function(err,results){
-		if(err){
-			throw err;		}
-		else 
+		else
 		{
 			if(results.length > 0){
 				tweets_count = results[0].tweets_count;
@@ -92,11 +80,11 @@ exports.getLeftPanelData = function(req,res){
 					"status" : "OK"
 				};
 				res.send(jsonresp);
-					
+
 			}
-			else {    
+			else {
 				console.log("Something's wrong.");
-				
+
 			}
 		}
 
@@ -114,15 +102,15 @@ exports.getFollowingList = function(req, res){
 		if(err){
 			throw err;
 		}
-		else 
+		else
 		{
 			if(results.length > 0){
 				var jsonresp = {"status" : "OK", "results" : results};
-				res.send(jsonresp);				
+				res.send(jsonresp);
 			}
-			else {    
+			else {
 				console.log("Something's wrong.");
-				
+
 			}
 		}
 
@@ -138,15 +126,15 @@ exports.getFollowerList = function(req, res){
 		if(err){
 			throw err;
 		}
-		else 
+		else
 		{
 			if(results.length > 0){
 				var jsonresp = {"status" : "OK", "results" : results};
-				res.send(jsonresp);				
+				res.send(jsonresp);
 			}
-			else {    
+			else {
 				console.log("Something's wrong.");
-				
+
 			}
 		}
 
@@ -161,20 +149,20 @@ exports.search = function(req, res){
 					  "JOIN twitterdb.users u WHERE tab1.user_id = u.user_id;"
 
 	mysql.fetchData(function(err,results){
-	
+
 		if(err){
 			throw err;
 		}
-		else 
+		else
 		{
 			if(results.length > 0){
 
-				jsonresp = {"result" : results, "status" : "OK"};		
-				res.send(jsonresp);	
+				jsonresp = {"result" : results, "status" : "OK"};
+				res.send(jsonresp);
 			}
-			else {    
-				jsonresp = {"result" : "Nothing Found", "status" : "OK"};		
-				res.send(jsonresp);	
+			else {
+				jsonresp = {"result" : "Nothing Found", "status" : "OK"};
+				res.send(jsonresp);
 			}
 		}
 

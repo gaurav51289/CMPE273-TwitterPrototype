@@ -20,7 +20,7 @@ app.controller('signUpController', function($scope, $http){
 		}else{
 			$scope.page1error = true;
 		}
-		
+
 	}
 
 
@@ -31,7 +31,7 @@ app.controller('signUpController', function($scope, $http){
 		}else{
 			$scope.page2error = true;
 		}
-		
+
 	}
 
 	$scope.doRegisterUsername = function() {
@@ -40,27 +40,29 @@ app.controller('signUpController', function($scope, $http){
 			method : "POST",
 			url : '/signUpUser',
 			data : {
-				"fullname" : $scope.fullName,
-				"password" : $scope.password,
-				"emailid" : $scope.emailId,
-				"phoneno" : $scope.phoneNo,
-				"username" : $scope.username
+					"userDetails" : {	
+						"fullname" : $scope.fullName,
+						"password" : $scope.password,
+						"emailid" : $scope.emailId,
+						"phoneno" : $scope.phoneNo,
+						"username" : $scope.username
+					}
 
 			}
 
 			}).then(function(res) {
-			
+
 				if(res.data.status == "OK")
-					window.location.assign("/twitterhome"); 
+					window.location.assign("/twitterhome");
 				if(res.data.status == "ERR")
 					$scope.page3username = true;
 			},function() {
-			
+
 			});
 		}else{
 			$scope.page3error = true;
 		}
-		
+
 	}
 
 
@@ -86,10 +88,10 @@ app.controller('loginController', function($scope, $http){
 			}
 
 		}).then(function(res) {
-			if(res.data.status == "OK")	
-			window.location.assign("/twitterhome"); 
+			if(res.data.status == "OK")
+			window.location.assign("/twitterhome");
 		},function() {
-			
+
 		});
 	}
 
