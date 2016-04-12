@@ -7,28 +7,33 @@ exports.getRightPanelUsers = function(req,res){
 
 	var userId = req.session.userId;
 
-// 	var rightPanelUsersQuery = "select user_id,fullname,username from users where user_id not in " +
-// "(select f.following_id from users u, follows f " +
-// "where u.user_id = '" +userId+ "' and u.user_id = f.follower_id) and user_id != '" +userId+ "' LIMIT 3";
+	mongo.find('follows',{'follower_id' : userId},function(err,followRes){
+		var followingIdsArr = [];
+		for (var i in followRes) {
+			followingIdsArr.push(new require('mongodb').ObjectId(followRes[i].following_id));
+		}
+			followingIdsArr.push(new require('mongodb').ObjectId(userId));
 
-	mongo.find('users', {},function(err,findRes){
+		var queryJSON = {_id : {$nin : followingIdsArr}};
+
+	mongo.find('users', queryJSON,function(err,findRes){
 		if(err){
 			throw err;
 		}
 		else
 		{
 			if(findRes){
-				console.log(findRes);
+
 				var jsonresp = {"status" : "OK", "results" : findRes};
 				res.send(jsonresp);
 			}
 			else {
 				console.log("Something's wrong.");
-
 			}
 		}
 	});
-};
+});
+}
 
 exports.getLeftPanelData = function(req,res){
 
@@ -36,12 +41,6 @@ exports.getLeftPanelData = function(req,res){
 	var following_count = 0
 	var followers_count = 0;
 	var tweets_count = 0;
-
-
-	var followingCountQuery = "SELECT count(following_id) AS following_count FROM follows WHERE follower_id = '" +userId+ "'";
-	var followersCountQuery = "SELECT count(follower_id) AS followers_count FROM follows WHERE following_id = '" +userId+ "'";
-	var tweetsCountQuery = "SELECT count(tweet_id) AS tweets_count FROM tweets WHERE user_id = '" +userId+ "'";
-
 
 	mongo.count('follows',{'follower_id' : userId},function(err,countRes){
 		if(err){
@@ -66,13 +65,13 @@ exports.getLeftPanelData = function(req,res){
 	});
 
 
-	mysql.fetchData(function(err,results){
+	mongo.count('tweets', {user_id : userId},function(err,countRes){
 		if(err){
 			throw err;		}
 		else
 		{
-			if(results.length > 0){
-				tweets_count = results[0].tweets_count;
+
+				tweets_count = countRes;
 				var jsonresp = {
 					"following_count" : following_count,
 					"followers_count" : followers_count,
@@ -80,85 +79,116 @@ exports.getLeftPanelData = function(req,res){
 					"status" : "OK"
 				};
 				res.send(jsonresp);
-
-			}
-			else {
-				console.log("Something's wrong.");
-
-			}
 		}
-
-	},tweetsCountQuery);
-
+	});
 }
 
 
 exports.getFollowingList = function(req, res){
 	var userId = req.param("profileUserId");
-
-	var getFollowingQuery = "SELECT * FROM twitterdb.users WHERE user_id IN (SELECT following_id FROM twitterdb.follows WHERE follower_id = '"+userId+"');";
-
-	mysql.fetchData(function(err,results){
-		if(err){
-			throw err;
+	console.log("Check here----------------------------------------");
+	console.log(userId);
+	mongo.find('follows',{'follower_id' : userId},function(err,followRes){
+		var followingIdsArr = [];
+		for (var i in followRes) {
+			followingIdsArr.push(new require('mongodb').ObjectId(followRes[i].following_id));
 		}
-		else
-		{
-			if(results.length > 0){
-				var jsonresp = {"status" : "OK", "results" : results};
-				res.send(jsonresp);
+			followingIdsArr.push(new require('mongodb').ObjectId(userId));
+		var queryJSON = {_id : {$in : followingIdsArr}};
+		mongo.find('users', queryJSON,function(err,users){
+			if(err){
+				throw err;
 			}
-			else {
-				console.log("Something's wrong.");
-
+			else
+			{
+				if(users){
+					var jsonresp = {"status" : "OK", "results" : users};
+					res.send(jsonresp);
+				}
+				else {
+					console.log("Something's wrong.");
+					jsonresp = {results : "NOTHING"};
+					res.send(jsonresp);
+				}
 			}
-		}
-
-	},getFollowingQuery);
+		});
+	});
 }
 
 exports.getFollowerList = function(req, res){
 	var userId = req.param("profileUserId");
 
-	var getFollowerQuery = "SELECT * FROM twitterdb.users WHERE user_id IN (SELECT follower_id FROM twitterdb.follows WHERE following_id = '"+userId+"');";
-
-	mysql.fetchData(function(err,results){
-		if(err){
-			throw err;
+	mongo.find('follows',{'following_id' : userId},function(err,followRes){
+		var followerIdsArr = [];
+		for (var i in followRes) {
+			followerIdsArr.push(new require('mongodb').ObjectId(followRes[i].follower_id));
 		}
-		else
-		{
-			if(results.length > 0){
-				var jsonresp = {"status" : "OK", "results" : results};
-				res.send(jsonresp);
+			followerIdsArr.push(new require('mongodb').ObjectId(userId));
+			var queryJSON = {_id : {$in : followerIdsArr}};
+			mongo.find('users', queryJSON,function(err,users){
+			if(err){
+				throw err;
 			}
-			else {
-				console.log("Something's wrong.");
-
+			else
+			{
+				if(users){
+					var jsonresp = {"status" : "OK", "results" : users};
+					res.send(jsonresp);
+				}
+				else {
+					console.log("Something's wrong.");
+					jsonresp = {results : "NOTHING"};
+					res.send(jsonresp);
+				}
 			}
-		}
-
-	},getFollowerQuery);
+		});
+	});
 }
 
 
 exports.search = function(req, res){
 	var userId = req.param("profileUserId");
-	var searchQuery = "SELECT tab1.*, u.user_id, u.username, u.fullname FROM " +
-					  "(SELECT * FROM twitterdb.tweets WHERE hashtags LIKE '%"+req.param("searchString")+"%') tab1 " +
-					  "JOIN twitterdb.users u WHERE tab1.user_id = u.user_id;"
 
-	mysql.fetchData(function(err,results){
+	mongo.searchIt('tweets',req.param("searchString"),function(err,searchRes){
 
 		if(err){
 			throw err;
 		}
 		else
 		{
-			if(results.length > 0){
+			if(searchRes){
 
-				jsonresp = {"result" : results, "status" : "OK"};
-				res.send(jsonresp);
+									var finalRes = [];
+									var alluserIds = [];
+									var userIdsByUse = {};
+									Object.keys(searchRes).forEach(function(index) {
+									// here, we'll first bit a list of all LogIds
+									var trace = searchRes[index];
+
+									alluserIds.push(new require('mongodb').ObjectId(trace.user_id));
+
+											if(!userIdsByUse[trace.user_id]){
+													userIdsByUse[trace.user_id] = [];
+											}
+											userIdsByUse[trace.user_id].push(trace);
+
+									});
+
+									mongo.find('users', {_id : {$in : alluserIds}}, function(err, users) {
+											users.forEach(function(user) {
+											//	console.log(userIdsByUse[user._id][0]);
+												for (var i in userIdsByUse[user._id]) {
+
+														userIdsByUse[user._id][i].username = user.username;
+														userIdsByUse[user._id][i].fullname = user.fullname;
+														finalRes.push(userIdsByUse[user._id][i]);
+												}
+											});
+											console.log(finalRes);
+											jsonresp = {result : finalRes, "status" : "OK"};
+											res.send(jsonresp);
+									});
+
 			}
 			else {
 				jsonresp = {"result" : "Nothing Found", "status" : "OK"};
@@ -166,5 +196,5 @@ exports.search = function(req, res){
 			}
 		}
 
-	},searchQuery);
+	});
 }

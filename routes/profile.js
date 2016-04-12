@@ -1,10 +1,10 @@
-var ejs = require("ejs");
+
 var mongo = require('./mongo');
 
 exports.loadProfile = function(req,res){
 
   		res.render('profile', {"username" : req.param("id")});
-
+      
 };
 
 
@@ -53,7 +53,7 @@ exports.unfollowUser = function(req,res){
 				console.log("Try again later.");
 		}
 
-	},unfollowQuery);
+	});
 
 };
 

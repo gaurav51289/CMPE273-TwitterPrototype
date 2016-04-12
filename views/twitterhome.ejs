@@ -110,11 +110,11 @@
                         </div>
                         <div class="home-tweet">
 
-                            <div class="media" ng-repeat="newTweet in newTweets | orderBy:'-tweet_timestamp'">
+                            <div class="media" ng-repeat="newTweet in newTweets | orderBy:'-timestamp'">
 
                                 <div ng-show="{{newTweet.isretweet}}"><img src="images/retweeted.png" class="retweeted-img"><a href="/{{newTweet.retweetedby}}">@{{newTweet.retweetedby}}</a> Retweeted</div>
 
-                                <a class="pull-left" href="#"><img class="tweet-img" alt="Bootstrap Media Preview" class="media-object"
+                                <a class="pull-left" href="#"><img class="tweet-img" alt="DP" class="media-object"
                                 src="images/profpics/{{newTweet.user_id}}.jpg"></a>
                                 <div class="media-body">
                                     <a href="/{{newTweet.username}}"><h4 style="color: #000;" class="media-heading">{{newTweet.fullname}}</h4></a>

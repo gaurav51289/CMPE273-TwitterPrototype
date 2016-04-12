@@ -21,14 +21,12 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 			}).then(function(res) {
 
 				if(res.data.status == "OK"){
-
 					$scope.searchShow = true;
 					$scope.searchResult = res.data.result;
-			
 				}
-				
+
 			},function() {
-				
+
 			});
 
 		}else{
@@ -44,11 +42,11 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 		$http({
 			method : "POST",
 			url : '/logoutUser',
-			
+
 
 		}).then(function(res){
 			if(res.data.status == "OK"){
-				window.location.assign("/"); 
+				window.location.assign("/");
 			}
 
 		}, function(){
@@ -71,9 +69,9 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 				$scope.username = res.data.result.username;
 
 			}
-			
+
 		},function() {
-			
+
 		});
 	}
 	getUserDetails();
@@ -82,18 +80,18 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 	$scope.getLeftPanelData = function(){
 		$http({
 			method : "POST",
-			url : '/getLeftPanelData'			
+			url : '/getLeftPanelData'
 
 		}).then(function(res) {
 
 			if(res.data.status == "OK"){
 				$scope.following_count =  res.data.following_count;
 				$scope.followers_count = res.data.followers_count;
-				$scope.tweets_count = res.data.tweets_count; 
+				$scope.tweets_count = res.data.tweets_count;
 			}
-			
+
 		},function() {
-			
+
 		});
 	}
 	$scope.getLeftPanelData();
@@ -102,7 +100,7 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 	$scope.getRightPanelUsers = function(){
 		$http({
 			method : "POST",
-			url : '/getRightPanelUsers'			
+			url : '/getRightPanelUsers'
 
 		}).then(function(res) {
 
@@ -113,9 +111,9 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 				}
 				$scope.rightPanelUsers = res.data.results;
 			}
-			
+
 		},function() {
-			
+
 		});
 	}
 	$scope.getRightPanelUsers();
@@ -123,7 +121,7 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 
 	$scope.followUser = function(user){
 
-		var followingUserId = user.user_id;
+		var followingUserId = user._id;
 
 		$http({
 			method : "POST",
@@ -137,12 +135,12 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 			if(res.data.status == "OK"){
 				user.showFollowButton = false;
 			}
-			
+
 		},function() {
-			
-		});	
+
+		});
 	}
-	
+
 	$scope.unfollowUser = function(user){
 
 		var followingUserId = user.user_id;
@@ -160,10 +158,10 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 				user.showFollowButton = true;
 
 			}
-			
+
 		},function() {
-			
-		});	
+
+		});
 	}
 
 
@@ -178,7 +176,7 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 	var fetchTweetsFlag = $interval(function(){$scope.fetchNewTweets();}, 10000);
 
 	$scope.fetchNewTweets = function(){
-		
+
 		$http({
 			method : "POST",
 			url : '/fetchNewTweets'
@@ -187,25 +185,24 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 			if(res.data.results){
 				$scope.newTweets = res.data.results;
 			}
-
 		}, function(){
 
 		});
 	}
 	$scope.fetchNewTweets();
 
-	
+
 	$scope.twtBoxFocus = function(){
-		
+
 			$scope.twtBoxRows = 3;
 			$scope.twtBtnShow = true;
-		
+
 	}
 
 	$scope.twtBoxBlur = function(){
 		if($scope.twtBoxContent === undefined || $scope.twtBoxContent == ""){
-			$scope.twtBoxRows = 1;   
-			$scope.twtBtnShow = false; 
+			$scope.twtBoxRows = 1;
+			$scope.twtBtnShow = false;
 		}
 	}
 
@@ -223,14 +220,14 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 
 			if(res.data.status == "OK"){
 
-				$scope.twtBoxContent = "";	
+				$scope.twtBoxContent = "";
 				$scope.twtBoxRows = 1;
 				$scope.twtBtnShow = false;
 				$scope.fetchNewTweets();
 			}
-			
+
 		},function() {
-			
+
 		});
 	}
 
@@ -241,7 +238,7 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 		$interval.cancel(fetchTweetsFlag);
 		$scope.retweet = newTweet;
 		$scope.retweetComment = "";
-		
+
 	}
 
 	$scope.sendRetweet = function(retweet){
@@ -262,9 +259,9 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 				$scope.fetchNewTweets()
 				fetchTweetsFlag = $interval(function(){$scope.fetchNewTweets();}, 5000);
 			}
-			
+
 		},function() {
-			
+
 		});
 	}
 
@@ -284,7 +281,6 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 	var userIdProfile;
 	var loggedInUserId;
 
-
 	var fetchNewTweetsProfile = function(){
 		$http({
 			method : "POST",
@@ -293,9 +289,6 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 
 		}).then(function(res){
 			if(res.data.results){
-
-
-
 				$scope.newTweets = res.data.results;
 			}
 
@@ -304,14 +297,14 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 		});
 	}
 	var fetchTweetsFlag = $interval(function(){$scope.fetchNewTweets();}, 5000);
-	
+
 	var getFollowingListForProfile = function(){
 		$http({
 			method : "POST",
 			url : '/getFollowingList',
 			data : {
 				"profileUserId" : $scope.userDetails.user_id
-			}		
+			}
 
 		}).then(function(res) {
 
@@ -319,9 +312,9 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 				followingList = res.data.results;
 				$scope.followingList = followingList;
 			}
-			
+
 		},function() {
-		
+
 		});
 	}
 
@@ -331,7 +324,7 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 			url : '/getFollowerList',
 			data : {
 				"profileUserId" : $scope.userDetails.user_id
-			}		
+			}
 
 		}).then(function(res) {
 
@@ -339,16 +332,16 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 				followerList = res.data.results;
 				$scope.followerList = followerList;
 			}
-			
+
 		},function() {
-		
+
 		});
 	}
 
 
 	var showHideButtons = function(){
 	//SHOW HIDE BUTTONS//
-		console.log("------------"+userIdProfile);
+		console.log(userIdProfile);
 		console.log(loggedInUserId);
 		if(userIdProfile == loggedInUserId){
 			$scope.editProfileButtonShow = true;
@@ -356,7 +349,7 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 			$scope.followButtonShow = false;
 			$scope.retweetDisabled = true;
 		}else{
-			
+
 			var foundFlag = false;
 
 			$http({
@@ -364,7 +357,7 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 				url : '/getFollowingList',
 				data : {
 					"profileUserId" : loggedInUserId
-				}		
+				}
 
 			}).then(function(res) {
 
@@ -419,7 +412,7 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 
 			if(res.data.status == "OK"){
 				$scope.userDetails = res.data.result;
-				userIdProfile = res.data.result.user_id;
+				userIdProfile = res.data.result._id;
 				loggedInUserId = res.data.loggedInUserId;
 
 				if($scope.userDetails.aboutme) $scope.aboutMeShow = true;
@@ -432,26 +425,26 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 				getFollowerListForProfile();
 				showHideButtons();
 			}
-			
+
 		},function() {
-			
+
 		});
 	}
 	getUserDetailsProfile();
 
-	
-	
+
+
 
 
 	//-----------------------------//
 
-	
+
 	$scope.saveProfileChanges = function(){
 
 		$http({
 			method : "POST",
 			url : '/saveProfileChanges',
-			data : { 
+			data : {
 				"profileDetails" : $scope.userDetails
 			}
 
@@ -469,11 +462,11 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 		$http({
 			method : "POST",
 			url : '/logoutUser',
-			
+
 
 		}).then(function(res){
 			if(res.data.status == "OK"){
-				window.location.assign("/"); 
+				window.location.assign("/");
 			}
 
 		}, function(){
@@ -486,7 +479,7 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 		$interval.cancel(fetchTweetsFlag);
 		$scope.retweet = newTweet;
 		$scope.retweetComment = "";
-		
+
 	}
 
 

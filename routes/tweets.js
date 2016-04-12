@@ -1,79 +1,36 @@
-var ejs = require("ejs");
-var mysql = require('./mysql');
+
+var mongo = require('./mongo');
 
 
 exports.sendTweet = function(req, res){
 	// check user already exists
 	var userId = req.session.userId;
-	var tweetDesc = req.param("tweetContent");
-	var hashTags = findHashtags(tweetDesc);
+	var tweetDesc = { "tweet_desc" : req.param("tweetContent"), "user_id" : userId};
+	var hashTags = findHashtags(tweetDesc.tweet_desc);
 	var hashTagsList = "";
 
 	if(hashTags != -1){
 		for(i in hashTags){
 			var hashTag = hashTags[i];
-			hashTagsList = hashTagsList + " " + hashTag;
+			hashTagsList = hashTagsList + hashTag + " ";
 
-			var insertHash = "INSERT INTO `twitterdb`.`hashtags` (`hashtag`) VALUES ('"+ hashTag +"');"
-
-				mysql.insertData(function(err,results){
-					
-					if(results.affectedRows > 0){
-						
-						console.log("Hash inserted");
-					} else if(err){
-						
-						if(err.message.includes("username_UNIQUE")){
-							msg = "UsernameNotAvailable";
-							console.log(msg);
-						} else {    
-							msg = "TryAgainLater";
-							
-							console.log("Something's wrong");
-						}
-					}  	
-
-				},insertHash);
 		}
 	}
 
+	tweetDesc.hashtags = hashTagsList;
+	tweetDesc.retweets_count = 0;
+	tweetDesc.likes_count = 0;
+	tweetDesc.timestamp = new Date();
+	console.log(tweetDesc);
+	mongo.insert('tweets', tweetDesc, function(err,insertRes){
 
-	var insertTweet = "INSERT INTO `twitterdb`.`tweets` (`user_id`, `tweet_desc`, `hashtags`, `retweets_count`, `likes_count`, `image`,`video`) " +
-			"VALUES " +
-			"('" +
-			userId +
-			"', '" +
-			tweetDesc +
-			"', '" +
-			hashTagsList +
-			"', '" +
-			"0" +
-			"', '" +
-			"0" +
-			"', " +
-			"null" +
-			", " +
-			"null" +
-			");";
-	
-	
-	mysql.insertData(function(err,results){
-		
-		if(results.affectedRows > 0){
-
+		if(insertRes){
 			var jsonresp = {"status" : "OK"};
 			res.send(jsonresp);
-
 		} else if(err){
-				
-			if(0){
-					
-			} else {    		
 				console.log("Try again later.");
-			}
-		}  	
-		
-	},insertTweet);
+		}
+	});
 };
 
 
@@ -84,6 +41,7 @@ exports.sendRetweet = function(req, res){
 	// check user already exists
 	var userId = req.session.userId;
 	var username = req.session.username;
+	var retweetContent = {};
 	var retweetData = req.param("retweetData");
 
 	var retweetUserId = retweetData.retweet.user_id;
@@ -93,88 +51,27 @@ exports.sendRetweet = function(req, res){
 	var basefullname = retweetData.retweet.fullname;
 	var comment = retweetData.comment;
 
-	var hashTags = findHashtags(retweetDesc);
-	var hashTagsList = "";
+	retweetContent.tweet_desc = retweetDesc;
+	retweetContent.user_id = retweetUserId;
+	retweetContent.retweets_count = retweetsCount;
+	retweetContent.timestamp = new Date();
+	retweetContent.isretweet = 1;
+	retweetContent.basetweet_id = tweetId;
+	retweetContent.retweetedby = username;
 
-	if(hashTags != -1){
-		for(i in hashTags){
-			var hashTag = hashTags[i];
-			hashTagsList = hashTagsList + " " + hashTag;
+	mongo.insert('tweets', retweetContent,function(err,insertRes){
 
-			var insertHash = "INSERT INTO `twitterdb`.`hashtags` (`hashtag`) VALUES ('"+ hashTag +"');"
-
-				mysql.insertData(function(err,results){
-					
-					if(results.affectedRows > 0){
-						
-						console.log("Hash inserted");
-					} else if(err){
-						
-						if(err.message.includes("username_UNIQUE")){
-							msg = "UsernameNotAvailable";
-							console.log(msg);
-						} else {    
-							msg = "TryAgainLater";
-							
-							console.log("Something's wrong");
-						}
-					}  	
-
-				},insertHash);
-		}
-	}
-
-
-	var insertRetweet = "INSERT INTO `twitterdb`.`tweets` " +
-			"(`user_id`, `tweet_desc`, `hashtags`, `retweets_count`, `likes_count`, `image`,`video`,`isretweet`,`basetweet_id`,`retweetedby`) " +
-			"VALUES " +
-			"('" +
-			retweetUserId +
-			"', '" +
-			retweetDesc +
-			"', '" +
-			hashTagsList +
-			"', '" +
-			retweetsCount +
-			"', '" +
-			"0" +
-			"', " +
-			"null" +
-			", " +
-			"null" +
-			", '" +
-			"1" +
-			"', '" +
-			tweetId+
-			"', '" +
-			username+
-			"');";		
-	
-	mysql.insertData(function(err,results){
-		console.log(insertRetweet);
-		if(results.affectedRows > 0){
-
+		if(insertRes){
 			var jsonresp = {"status" : "OK"};
 			res.send(jsonresp);
-
 		} else if(err){
-				
-			if(0){
-					
-			} else {    		
 				console.log("Try again later.");
-			}
-		}  	
-		
-	},insertRetweet);
+		}
 
-	//updateRetweet Count
-	var updateRetweetCount = "UPDATE `twitterdb`.`tweets` SET retweets_count=retweets_count+1  WHERE `tweet_id`='" +tweetId+ "';"
-	
-	mysql.updateData(function(err,results){},updateRetweetCount);
+	});
 
-
-
+	var otweetId = new require('mongodb').ObjectId(tweetId);
+	mongo.updateRetweetCount('tweets', {_id : otweetId}, 1);
 };
 
 
@@ -187,65 +84,117 @@ exports.fetchNewTweets = function(req,res){
 	var username = req.session.username;
 
 	if(req.param("userIdProfile")){
+
 		var userIdProfile = req.param("userIdProfile");
-		var newTweetsQuery = "SELECT * FROM (SELECT * from `twitterdb`.`tweets` t WHERE t.user_id = '" +userIdProfile+ "') tab1 " + 
-							 "JOIN `twitterdb`.`users` u WHERE u.user_id = tab1.user_id ";		
+
+		var queryJSON = {user_id : userIdProfile};
+		mongo.find('tweets', queryJSON,function(err,tweets){
+			if(err){
+				throw err;
+			}
+			else
+			{
+				if(tweets){
+					var finalRes = [];
+					var alluserIds = [];
+					var userIdsByUse = {};
+					Object.keys(tweets).forEach(function(index) {
+					// here, we'll first bit a list of all LogIds
+					var trace = tweets[index];
+
+					alluserIds.push(new require('mongodb').ObjectId(trace.user_id));
+
+							if(!userIdsByUse[trace.user_id]){
+									userIdsByUse[trace.user_id] = [];
+							}
+							userIdsByUse[trace.user_id].push(trace);
+
+					});
+
+					mongo.find('users', {_id : {$in : alluserIds}}, function(err, users) {
+							users.forEach(function(user) {
+							//	console.log(userIdsByUse[user._id][0]);
+								for (var i in userIdsByUse[user._id]) {
+
+										userIdsByUse[user._id][i].username = user.username;
+										userIdsByUse[user._id][i].fullname = user.fullname;
+										finalRes.push(userIdsByUse[user._id][i]);
+								}
+							});
+						//	console.log(finalRes);
+							jsonresp = {results : finalRes};
+							res.send(jsonresp);
+					});
+
+
+				}
+				else {
+					console.log("Something's wrong.");
+					jsonresp = {results : "NOTHING"};
+					res.send(jsonresp);
+				}
+			}
+
+		});
+
 	}else{
-		var newTweetsQuery = "SELECT tab1.*, u.user_id, u.username, u.fullname FROM " +
-		"(SELECT * FROM `twitterdb`.`tweets` t WHERE t.user_id = '" +userId+ "'" +
-		"OR t.user_id IN (SELECT following_id from `twitterdb`.`follows` f WHERE f.follower_id = '" +userId+ "')) tab1 " +
-		"JOIN users u WHERE tab1.user_id = u.user_id";	
+			mongo.find('follows',{'follower_id' : userId},function(err,followRes){
+				var followingIdsArr = [];
+				for (var i in followRes) {
+					followingIdsArr.push(followRes[i].following_id);
+				}
+					followingIdsArr.push(userId);
+				var queryJSON = {user_id : {$in : followingIdsArr}};
+				mongo.find('tweets', queryJSON,function(err,tweets){
+					if(err){
+						throw err;
+					}
+					else
+					{
+						if(tweets){
+													var finalRes = [];
+													var alluserIds = [];
+													var userIdsByUse = {};
+													Object.keys(tweets).forEach(function(index) {
+													// here, we'll first bit a list of all LogIds
+													var trace = tweets[index];
+
+													alluserIds.push(new require('mongodb').ObjectId(trace.user_id));
+
+															if(!userIdsByUse[trace.user_id]){
+																	userIdsByUse[trace.user_id] = [];
+															}
+															userIdsByUse[trace.user_id].push(trace);
+
+													});
+
+													mongo.find('users', {_id : {$in : alluserIds}}, function(err, users) {
+															users.forEach(function(user) {
+															//	console.log(userIdsByUse[user._id][0]);
+																for (var i in userIdsByUse[user._id]) {
+
+																		userIdsByUse[user._id][i].username = user.username;
+																		userIdsByUse[user._id][i].fullname = user.fullname;
+																		finalRes.push(userIdsByUse[user._id][i]);
+																}
+															});
+														//	console.log(finalRes);
+															jsonresp = {results : finalRes};
+															res.send(jsonresp);
+													});
+
+						}
+						else {
+							console.log("Something's wrong.");
+							jsonresp = {results : "NOTHING"};
+							res.send(jsonresp);
+						}
+					}
+
+				});
+			});
 	}
-	
-	
-
-	
-
-	mysql.fetchData(function(err,results){
-		if(err){
-			throw err;
-		}
-		else 
-		{
-			if(results.length > 0){
-
-				jsonresp = {results : results};		
-				res.send(jsonresp);	
-			}
-			else {    
-				console.log("Something's wrong.");
-				jsonresp = {results : "NOTHING"};	
-				res.send(jsonresp);	
-			}
-		}
-
-	},newTweetsQuery);
-
-	/*var newRetweetsQuery = "SELECT * FROM twitterdb.retweets r JOIN twitterdb.tweets t WHERE r.tweet_id = t.tweet_id " + 
-	"AND r.user_id IN (SELECT following_id from `twitterdb`.`follows` f WHERE f.follower_id = '" +userId+ "')";
-
-	mysql.fetchData(function(err,results){
-		if(err){
-			throw err;
-		}
-		else 
-		{
-			if(results.length > 0){
-
-				jsonresp = {results : results};
-				res.send(jsonresp);				
-			}
-			else {    
-				console.log("Something's wrong.");
-				
-			}
-		}
-
-	},newRetweetsQuery);*/
 };
-
-
-
 
 
 var findHashtags = function(searchText) {

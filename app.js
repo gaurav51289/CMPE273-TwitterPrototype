@@ -62,9 +62,6 @@ app.post('/followUser',profile.followUser);
 app.post('/unfollowUser', profile.unfollowUser);
 
 
-
-
-
 app.get('/:id', profile.loadProfile);
 app.post('/getFollowingList', others.getFollowingList);
 app.post('/getFollowerList', others.getFollowerList);
