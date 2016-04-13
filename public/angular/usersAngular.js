@@ -40,7 +40,7 @@ app.controller('signUpController', function($scope, $http){
 			method : "POST",
 			url : '/signUpUser',
 			data : {
-					"userDetails" : {	
+					"userDetails" : {
 						"fullname" : $scope.fullName,
 						"password" : $scope.password,
 						"emailid" : $scope.emailId,
@@ -76,6 +76,7 @@ app.controller('signUpController', function($scope, $http){
 
 app.controller('loginController', function($scope, $http){
 
+	$scope.invalidLogin = false;
 
 	$scope.loginUser = function() {
 
@@ -90,6 +91,9 @@ app.controller('loginController', function($scope, $http){
 		}).then(function(res) {
 			if(res.data.status == "OK")
 			window.location.assign("/twitterhome");
+			else if(res.data.status == "INVALID_LOGIN"){
+					$scope.invalidLogin = true;
+			}
 		},function() {
 
 		});

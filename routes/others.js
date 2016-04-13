@@ -86,14 +86,11 @@ exports.getLeftPanelData = function(req,res){
 
 exports.getFollowingList = function(req, res){
 	var userId = req.param("profileUserId");
-	console.log("Check here----------------------------------------");
-	console.log(userId);
 	mongo.find('follows',{'follower_id' : userId},function(err,followRes){
 		var followingIdsArr = [];
 		for (var i in followRes) {
 			followingIdsArr.push(new require('mongodb').ObjectId(followRes[i].following_id));
 		}
-			followingIdsArr.push(new require('mongodb').ObjectId(userId));
 		var queryJSON = {_id : {$in : followingIdsArr}};
 		mongo.find('users', queryJSON,function(err,users){
 			if(err){
@@ -104,6 +101,7 @@ exports.getFollowingList = function(req, res){
 				if(users){
 					var jsonresp = {"status" : "OK", "results" : users};
 					res.send(jsonresp);
+
 				}
 				else {
 					console.log("Something's wrong.");
@@ -123,7 +121,6 @@ exports.getFollowerList = function(req, res){
 		for (var i in followRes) {
 			followerIdsArr.push(new require('mongodb').ObjectId(followRes[i].follower_id));
 		}
-			followerIdsArr.push(new require('mongodb').ObjectId(userId));
 			var queryJSON = {_id : {$in : followerIdsArr}};
 			mongo.find('users', queryJSON,function(err,users){
 			if(err){
@@ -132,6 +129,7 @@ exports.getFollowerList = function(req, res){
 			else
 			{
 				if(users){
+
 					var jsonresp = {"status" : "OK", "results" : users};
 					res.send(jsonresp);
 				}

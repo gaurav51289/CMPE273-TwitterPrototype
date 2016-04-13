@@ -64,7 +64,7 @@ app.controller('bodyCtrl', function($scope, $http, $interval, $timeout){
 		}).then(function(res) {
 
 			if(res.data.status == "OK"){
-				$scope.userId = res.data.result.user_id;
+				$scope.userId = res.data.result._id;
 				$scope.fullname = res.data.result.fullname;
 				$scope.username = res.data.result.username;
 
@@ -303,7 +303,7 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 			method : "POST",
 			url : '/getFollowingList',
 			data : {
-				"profileUserId" : $scope.userDetails.user_id
+				"profileUserId" : $scope.userDetails._id
 			}
 
 		}).then(function(res) {
@@ -417,7 +417,7 @@ app.controller('profilePageController', function($scope, $http, $interval, usern
 
 				if($scope.userDetails.aboutme) $scope.aboutMeShow = true;
 				if($scope.userDetails.city) $scope.cityShow = true;
-				if($scope.userDetails.dobf) $scope.dobShow = true;
+				if($scope.userDetails.dob) $scope.dobShow = true;
 
 
 				fetchNewTweetsProfile();

@@ -10,15 +10,21 @@ var express = require('express')
   , profile = require('./routes/profile')
   , users = require('./routes/users')
   , http = require('http')
-  , session = require('client-sessions')
   , path = require('path');
+var expressSession = require("express-session");
+var mongoStore = require("connect-mongo")(expressSession);
+var mongoSessionConnectURL = "mongodb://localhost:27017/twitterdb";
 
 var app = express();
-app.use(session({
-  cookieName : 'session',
-  secret : 'fjlksjairfja;lfkl;nv484874fl;dsje0',
-  duration : 2 * 60 * 1000,
-  activeDuration : 5 * 60 * 1000
+app.use(expressSession({
+	secret: 'fjklowjafnkvnap',
+	resave: false,  //don't save session if unmodified
+	saveUninitialized: false,	// don't create session until something stored
+	duration: 30 * 60 * 1000,
+	activeDuration: 5 * 60 * 1000,
+	store: new mongoStore({
+		url: mongoSessionConnectURL
+	})
 }));
 
 // all environments

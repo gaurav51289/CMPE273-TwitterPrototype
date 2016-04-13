@@ -4,7 +4,7 @@ var mongo = require('./mongo');
 exports.loadProfile = function(req,res){
 
   		res.render('profile', {"username" : req.param("id")});
-      
+
 };
 
 
@@ -68,10 +68,19 @@ exports.saveProfileChanges = function(req, res){
 								"phoneno = '"+profileDetails.phoneno+"' " +
 								//"dob = '"+profileDetails.dobshow+"' " +             add comma above
 								"WHERE `user_id`='" +userId+ "';"
+  var queryJSON = {_id : new require('mongodb').ObjectId(userId)};
+  var updateJSON = {  $set : {
+                                aboutme : profileDetails.aboutme,
+                                city : profileDetails.city,
+                                emailid : profileDetails.emailid,
+                                phoneno : profileDetails.phoneno,
+                                dob : new Date(profileDetails.dobshow)
+                              }
+                  }
 
-	mysql.updateData(function(err,results){
+	mongo.updateOne('users', queryJSON, updateJSON, function(err,updateRes){
 
-		if(results.affectedRows > 0){
+		if(updateRes){
 
 			var jsonresp = {"status" : "OK"};
 			res.send(jsonresp);
@@ -85,6 +94,6 @@ exports.saveProfileChanges = function(req, res){
 			}
 		}
 
-	},updateProfileChanges);
+	});
 
 };

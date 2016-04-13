@@ -129,7 +129,7 @@
                                 <div class="modal-body">
                                     <div class="row" ng-repeat="user in followingList">
                                         <div class="col-md-2">
-                                            <div style="padding: 5px;"><img src="images/profpics/{{user.user_id}}.jpg" class="img-who-to-follow"></div>
+                                            <div style="padding: 5px;"><img src="images/profpics/{{user._id}}.jpg" class="img-who-to-follow"></div>
                                         </div>
                                         <div class="col-md-10">
                                             <div style="padding: 10px;">
@@ -177,10 +177,10 @@
                         <span class="profile-city" ng-show="cityShow"><span class="glyphicon glyphicon-map-marker"></span>&nbsp;{{userDetails.city}}</span>
                     </div>
                     <div class="row">
-                        <span class="profile-joined-on"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Joined {{userDetails.joinedonf}}</span>
+                        <span class="profile-joined-on"><span class="glyphicon glyphicon-calendar"></span>&nbsp;Joined {{userDetails.joinedon}}</span>
                     </div>
                     <div class="row">
-                        <span class="profile-dob" ng-show="dobShow"><span class="glyphicon glyphicon-tint"></span>&nbsp;{{userDetails.dobf}}</span>
+                        <span class="profile-dob" ng-show="dobShow"><span class="glyphicon glyphicon-tint"></span>&nbsp;Born on {{userDetails.dob}}</span>
                     </div>
                     </div>
                 </div>
@@ -268,7 +268,7 @@
                         <h4>&nbsp; Following</h4>
                         <div class="row" ng-repeat="user in followingList">
                             <div class="col-md-2">
-                                <div style="padding: 5px;"><img src="images/profpics/{{user.user_id}}.jpg" class="img-who-to-follow"></div>
+                                <div style="padding: 5px;"><img src="images/profpics/{{user._id}}.jpg" class="img-who-to-follow"></div>
                             </div>
                             <div class="col-md-10">
                                 <div style="padding: 10px;">
@@ -313,7 +313,7 @@
                         <form class="form-horizontal" role="form">
                             <div class="form-group">
                             <div class="col-sm-4">
-                                <img src="images/profpics/{{userDetails.user_id}}.jpg" class="change-profile-pic-img pull-right">
+                                <img src="images/profpics/{{userDetails._id}}.jpg" class="change-profile-pic-img pull-right">
                             </div>
                             <div class="col-sm-6">
                                 <input id="myInput" type="file" style="visibility:hidden" />
